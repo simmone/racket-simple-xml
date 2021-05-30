@@ -6,7 +6,7 @@
 (require racket/runtime-path)
 (define-runtime-path sheet_xml_file "sheet.xml")
 
-(require rackunit "../main.rkt")
+(require rackunit "../../main.rkt")
 
 (define test-xml
   (test-suite
@@ -246,48 +246,30 @@
                    ("c" ("r" . "E2") ("v" "0.6934"))
                    ("c" ("r" . "F2") ("v" "43360")))
 
-                  ("row" ("r" . "1") ("spans" . "1:6")
-                   ("c" ("r" . "A2") ("t" . "s") ("v" "8"))
-                   ("c" ("r" . "B2") ("v" "100"))
-                   ("c" ("r" . "C2") ("v" "300"))
-                   ("c" ("r" . "D2") ("v" "200"))
-                   ("c" ("r" . "E2") ("v" "0.6934"))
-                   ("c" ("r" . "F2") ("v" "43360")))
+                  ("row" ("r" . "3") ("spans" . "1:6")
+                   ("c" ("r" . "A3") ("t" . "s") ("v" "13"))
+                   ("c" ("r" . "B3") ("v" "200"))
+                   ("c" ("r" . "C3") ("v" "400"))
+                   ("c" ("r" . "D3") ("v" "300"))
+                   ("c" ("r" . "E3") ("v" "139999.89223"))
+                   ("c" ("r" . "F3") ("v" "43361")))
 
+                  ("row" ("r" . "4") ("spans" . "1:6")
+                   ("c" ("r" . "A4") ("t" . "s") ("v" "6"))
+                   ("c" ("r" . "B4") ("v" "300"))
+                   ("c" ("r" . "C4") ("v" "500"))
+                   ("c" ("r" . "D4") ("v" "400"))
+                   ("c" ("r" . "E4") ("v" "23.34"))
+                   ("c" ("r" . "F4") ("v" "43362"))))
 
-    <row r="3" spans="1:6">
-      <c r="A3" t="s"><v>13</v></c>
-      <c r="B3"><v>200</v></c>
-      <c r="C3"><v>400</v></c>
-      <c r="D3"><v>300</v></c>
-      <c r="E3"><v>139999.89223</v></c>
-      <c r="F3"><v>43361</v></c>
-    </row>
+                 ("phoneticPr" ("fontId" . "1") ("type" . "noConversion"))
+                 ("pageMargins" ("left" . "0.7") ("right" . "0.7") ("top" . "0.75") ("bottom" . "0.75") ("header" . "0.3") ("footer" . "0.3"))
+                 ("pageSetup" ("paperSize" . "9") ("orientation" . "portrait") ("horizontalDpi" . "200") ("verticalDpi" . "200") ("r:id" . "rId1")))])
 
-    <row r="4" spans="1:6">
-      <c r="A4" t="s"><v>6</v></c>
-      <c r="B4"><v>300</v></c>
-      <c r="C4"><v>500</v></c>
-      <c r="D4"><v>400</v></c>
-      <c r="E4"><v>23.34</v></c>
-      <c r="F4"><v>43362</v></c>
-    </row>
-  </sheetData>
-
-  <phoneticPr fontId="1" type="noConversion"/>
-
-  <pageMargins left="0.7" right="0.7" top="0.75" bottom="0.75" header="0.3" footer="0.3"/>
-
-  <pageSetup paperSize="9" orientation="portrait" horizontalDpi="200" verticalDpi="200" r:id="rId1"/>
-
-</worksheet>
-
-
-      (call-with-input-file sharedStrings_formated_xml_file
+      (call-with-input-file sheet_xml_file
         (lambda (p)
           (check-equal? (lists->xml xml)
-                        (port->string p))))
-
-  ))
+                        (port->string p)))))
+  )))
 
 (run-tests test-xml)

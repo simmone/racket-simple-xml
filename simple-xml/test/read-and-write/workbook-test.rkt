@@ -6,7 +6,7 @@
 (require racket/runtime-path)
 (define-runtime-path workbook_xml_file "workbook.xml")
 
-(require rackunit "../main.rkt")
+(require rackunit "../../main.rkt")
 
 (define test-xml
   (test-suite
