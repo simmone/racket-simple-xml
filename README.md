@@ -11,14 +11,16 @@ xml, remove redundant format, more readable.
 
 Chen Xiao <[chenxiao770117@gmail.com](mailto:chenxiao770117@gmail.com)>
 
-    1 Install           
-                        
-    2 xml->hash         
-      2.1 Basic Usage   
-      2.2 Hierachy      
-      2.3 Count and List
-                        
-    3 lists->xml        
+    1 Install                         
+                                      
+    2 xml->hash                       
+      2.1 Basic Usage                 
+      2.2 Hierachy                    
+      2.3 Count and List              
+                                      
+    3 lists->xml                      
+                                      
+    4 lists->xml\_content and xml-trim
 
 ```racket
  (require simple-xml) package: [simple-xml](https://pkgs.racket-lang.org/package/simple-xml)
@@ -185,32 +187,32 @@ child[3]'s attr:[a3] and content:[c3]
 
 convert lists to xml, the list should obey below rules.
 
-* First node of list should be a string? It represent node name.
+1. First node of list should be a string? It represent node name.
 
- ```racket
+```racket
 '("H1") -> <H1/>
 ```
 
-* All the pairs represent node’s attributes.
+2. All the pairs represent node’s attributes.
 
- ```racket
+```racket
 '("H1" ("attr1" . "1") ("attr2" . "2")) -> <H1 "attr1"="1" "attr2"="2"/>
 ```
 
-* If have children, string represent its value, or, the lists represents
-  its children. Node’s children should either string? or lists?, only
-  one of these two types.
+3. If have children, string represent its value, or, the lists
+represents its children.         Node’s children should either string?
+or lists?, only one of these two types.
 
- ```racket
+```racket
 '("H1" "haha") -> <H1>haha</H1>
-                                 
-  '("H1" ("H2" "haha")) ->       
-                                 
-    <H1>                         
-      <H2>                       
-        haha                     
-      </H2>                      
-    </H1>                        
+                               
+'("H1" ("H2" "haha")) ->       
+                               
+  <H1>                         
+    <H2>                       
+      haha                     
+    </H2>                      
+  </H1>                        
 ```
 
 ```racket
@@ -223,3 +225,11 @@ remove all the format characters.
 ```racket
 '("H1" ("H2" "haha")) -> <H1><H2>haha</H2></H1>
 ```
+
+## 4. lists->xml\_content and xml-trim
+
+lists->xml\_content turn lists to xml without header.
+
+xml-trim to generate compact xml.
+
+these two function be combined together to generate the main functions.

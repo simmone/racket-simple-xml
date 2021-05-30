@@ -9,6 +9,8 @@
           [xml->hash (-> path-string? (or/c #f hash?))]
           [remove-one-map (-> hash? hash?)]
           [lists->xml (-> list? string?)]
+          [xml-trim (-> string? string?)]
+          [lists->xml_content (-> list? string?)]
           [lists->compact_xml (-> list? string?)]
           ))
 
@@ -172,14 +174,13 @@
           (make-hash removed_pairs)))))
 
 (define (lists->xml xml_list)
-  (add-xml-head
-   (lists->xml_content xml_list)))
+  (add-xml-head (lists->xml_content xml_list)))
 
 (define (lists->compact_xml xml_list)
-  (add-xml-head
-   (regexp-replace* #rx">\n *<"
-                    (lists->xml_content xml_list)
-                    "><")))
+  (add-xml-head (xml-trim (lists->xml_content xml_list))))
+
+(define (xml-trim xml)
+  (regexp-replace* #rx">\n *<" xml "><"))
 
 (define (add-xml-head xml_str)
   (format "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n\n~a" xml_str))

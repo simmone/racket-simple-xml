@@ -169,17 +169,20 @@ child[3]'s attr:[a3] and content:[c3]
 
 convert lists to xml, the list should obey below rules.
 
-@itemlist[
-  @item{First node of list should be a string? It represent node name.}
+1. First node of list should be a string? It represent node name.
+
     @codeblock{
      '("H1") -> <H1/>
     }
-  @item{All the pairs represent node's attributes.}
+
+2. All the pairs represent node's attributes.
+
     @codeblock{
      '("H1" ("attr1" . "1") ("attr2" . "2")) -> <H1 "attr1"="1" "attr2"="2"/>
     }
-  @item{If have children, string represent its value, or, the lists represents its children. 
-        Node's children should either string? or lists?, only one of these two types.}
+
+3. If have children, string represent its value, or, the lists represents its children. 
+        Node's children should either string? or lists?, only one of these two types.
 
    @codeblock{
    '("H1" "haha") -> <H1>haha</H1>
@@ -192,7 +195,6 @@ convert lists to xml, the list should obey below rules.
        </H2>
      </H1>
    }
-]
 
 @defproc[(lists->compact_xml
               [xml list?]
@@ -205,3 +207,11 @@ remove all the format characters.
 @codeblock{
    '("H1" ("H2" "haha")) -> <H1><H2>haha</H2></H1>
 }
+
+@section{lists->xml_content and xml-trim}
+
+lists->xml_content turn lists to xml without header.
+
+xml-trim to generate compact xml.
+
+these two function be combined together to generate the main functions.

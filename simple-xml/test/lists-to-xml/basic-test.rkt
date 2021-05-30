@@ -12,6 +12,8 @@
 (define-runtime-path content_xml_file "content.xml")
 (define-runtime-path children_xml_file "children.xml")
 (define-runtime-path children_compact_xml_file "children_compact.xml")
+(define-runtime-path no_header_children_xml_file "no_header_children.xml")
+(define-runtime-path no_header_children_compact_xml_file "no_header_children_compact.xml")
 (define-runtime-path three_xml_file "three.xml")
 (define-runtime-path three_compact_xml_file "three_compact.xml")
 (define-runtime-path parallel_xml_file "parallel.xml")
@@ -118,6 +120,19 @@
           (check-equal? (lists->compact_xml xml)
                         (port->string p))))))
 
+   (test-case
+    "test-no-header"
+
+    (let ([xml '("H1" ("color" . "red") ("height" . "5") ("H2" ("color" . "black") "Simple XML"))])
+      (call-with-input-file no_header_children_xml_file
+        (lambda (p)
+          (check-equal? (lists->xml_content xml)
+                        (port->string p))))
+
+      (call-with-input-file no_header_children_compact_xml_file
+        (lambda (p)
+          (check-equal? (xml-trim (lists->xml_content xml))
+                        (port->string p))))))
   ))
 
 (run-tests test-xml)
