@@ -10,6 +10,7 @@
 (define-runtime-path one_node_xml_file "one_node.xml")
 (define-runtime-path property_xml_file "property.xml")
 (define-runtime-path content_xml_file "content.xml")
+(define-runtime-path symbol_content_xml_file "symbol_content.xml")
 (define-runtime-path children_xml_file "children.xml")
 (define-runtime-path children_compact_xml_file "children_compact.xml")
 (define-runtime-path no_header_children_xml_file "no_header_children.xml")
@@ -56,6 +57,15 @@
     "test-content-xml"
 
     (let ([xml '("H1" ("color" . "red") "Hello XML")])
+      (call-with-input-file content_xml_file
+        (lambda (p)
+          (check-equal? (lists->xml xml)
+                        (port->string p))))))
+
+   (test-case
+    "test-symbol-content-xml"
+
+    (let ([xml '(H1 (color . red) "Hello XML")])
       (call-with-input-file content_xml_file
         (lambda (p)
           (check-equal? (lists->xml xml)
