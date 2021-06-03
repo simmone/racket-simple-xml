@@ -88,7 +88,7 @@
    (test-case
     "test-three-xml"
 
-    (let ([xml '("H1" ("color" . "red") ("height" . "5") ("H2" ("color" . "black") ("H3" ("color" . "pink") "Simple XML")))])
+    (let ([xml '("H1" ("color" . "red") (height . "5") ("H2" ("color" . "black") ("H3" ("color" . "pink") "Simple XML")))])
       (call-with-input-file three_xml_file
         (lambda (p)
           (check-equal? (lists->xml xml)
@@ -102,7 +102,7 @@
    (test-case
     "test-parallel-xml"
 
-    (let ([xml '("H1" ("color" . "red") ("height" . "5") ("H2" ("color" . "black") "Simple XML") ("H3" ("color" . "pink") "Haha"))])
+    (let ([xml '("H1" ("color" . "red") ("height" . "5") ("H2" ("color" . "black") "Simple XML") ("H3" ("color" . "pink") Haha))])
       (call-with-input-file parallel_xml_file
         (lambda (p)
           (check-equal? (lists->xml xml)

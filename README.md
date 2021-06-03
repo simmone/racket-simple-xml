@@ -187,7 +187,8 @@ child[3]'s attr:[a3] and content:[c3]
 
 convert lists to xml, the list should obey below rules.
 
-1. First node of list should be a string? It represent node name.
+1. First node of list should be a string? or symbol? It represent node
+name.
 
 ```racket
 '("H1") -> <H1/>
@@ -199,9 +200,9 @@ convert lists to xml, the list should obey below rules.
 '("H1" ("attr1" . "1") ("attr2" . "2")) -> <H1 "attr1"="1" "attr2"="2"/>
 ```
 
-3. If have children, string represent its value, or, the lists
+3. If have children, string/symbol represent its value, or, the lists
 represents its children.         Node’s children should either string?
-or lists?, only one of these two types.
+or symbol? or lists?, only one of these three types.
 
 ```racket
 '("H1" "haha") -> <H1>haha</H1>

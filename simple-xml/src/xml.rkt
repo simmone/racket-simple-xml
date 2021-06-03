@@ -191,10 +191,10 @@
       (let loop ([out_p xml_port]
                  [nodes xml_list]
                  [prefix_spaces ""])
-        (when (and (not (null? nodes)) (string? (car nodes)))
-          (let* ([properties (filter (cons/c string? string?) (cdr nodes))]
-                 [children (filter-not (cons/c string? string?) (cdr nodes))]
-                 [string_children (filter string? children)]
+        (when (and (not (null? nodes)) ((or/c string? symbol?) (car nodes)))
+          (let* ([properties (filter (cons/c (or/c string? symbol?) (or/c string? symbol?)) (cdr nodes))]
+                 [children (filter-not (cons/c (or/c string? symbol?) (or/c string? symbol?)) (cdr nodes))]
+                 [value_children (filter (or/c string? symbol?) children)]
                  [list_children (filter list? children)])
             (fprintf out_p
                             "~a<~a~a"
@@ -202,7 +202,7 @@
                             (car nodes)
                             (call-with-output-string
                              (lambda (property_port)
-                               (let loop-properties ([properties (filter (cons/c string? string?) (cdr nodes))])
+                               (let loop-properties ([properties (filter (cons/c (or/c string? symbol?) (or/c string? symbol?)) (cdr nodes))])
                                  (when (not (null? properties))
                                    (fprintf property_port" ~a=\"~a\"" (caar properties) (cdar properties))
                                    (loop-properties (cdr properties)))))))
@@ -211,8 +211,8 @@
                  (fprintf out_p "/>\n")
                  (begin
                    (fprintf out_p ">")
-                   (if (not (null? string_children))
-                       (fprintf out_p "~a</~a>\n" (apply string-append string_children) (car nodes))
+                   (if (not (null? value_children))
+                       (fprintf out_p "~a</~a>\n" (apply string-append (map (lambda (v) (format "~a" v)) value_children)) (car nodes))
                        (fprintf out_p "\n~a~a</~a>\n"
                                 (call-with-output-string
                                  (lambda (children_port)
