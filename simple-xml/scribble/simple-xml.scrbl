@@ -2,7 +2,7 @@
 
 @(require (for-label simple-xml))
 
-@title{simple-xml: read xml to hash, write xml from lists.}
+@title{Simple-Xml: read xml to hash, write xml from lists.}
 
 Racket build-in xml decoding function is: xml->xexpr. But decoded result is a hierrachical list, not covenient use.
 

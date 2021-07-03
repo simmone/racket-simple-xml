@@ -1,4 +1,4 @@
-# simple-xml: read xml to hash, write xml from lists.
+# Simple-Xml: read xml to hash, write xml from lists.
 
 Racket build-in xml decoding function is: xml->xexpr. But decoded result
 is a hierrachical list, not covenient use.
