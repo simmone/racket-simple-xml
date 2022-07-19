@@ -19,6 +19,10 @@
       (check-false xml_hash)
       )
 
+    (let ([xml_hash (xml->hash (open-input-file broken_xml_file))])
+      (check-false xml_hash)
+      )
+
     )
 
   ))

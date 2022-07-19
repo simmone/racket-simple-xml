@@ -6,7 +6,7 @@
 (require detail)
 
 (provide (contract-out
-          [xml->hash (-> path-string? (or/c #f hash?))]
+          [xml->hash (-> (or/c path-string? input-port?) (or/c #f hash?))]
           [remove-one-map (-> hash? hash?)]
           [lists->xml (-> list? string?)]
           [xml-trim (-> string? string?)]
@@ -27,17 +27,18 @@
         (detail-line (format "XML File:~a" xml))
 
         (let ([xml_xexpr
-               ;; load xml file to xexpr to start parsing
-               (call-with-input-file
-                   xml
-                 (lambda (origin_port)
+               ;; load xml file or input port to xexpr to start parsing
+               (let ([src_port
+                      (if (input-port? xml)
+                          xml
+                          (open-input-file xml))])
                    ;; remove all the spaces
                    (call-with-input-string
                     (regexp-replace* #rx"> *<"
-                                     (regexp-replace* #rx"\n|\r" (port->string origin_port) "")
+                                     (regexp-replace* #rx"\n|\r" (port->string src_port) "")
                                      "><")
                     (lambda (filtered_port)
-                      (list (xml->xexpr (document-element (read-xml filtered_port))))))))])
+                      (list (xml->xexpr (document-element (read-xml filtered_port)))))))])
 
           (let ([xml_hash (make-hash)])
             ;; parent_node means parent node name, start from #f

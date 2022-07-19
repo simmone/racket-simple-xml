@@ -24,6 +24,16 @@
       (check-equal? (hash-ref xml_hash "empty.attr1") "a1")
       (check-equal? (hash-ref xml_hash "empty.attr2") "a2")
       )
+
+    (let ([xml_hash (xml->hash (open-input-file empty_xml_file))])
+      
+      (check-equal? (hash-count xml_hash) 4)
+
+      (check-equal? (hash-ref xml_hash "empty's count") 1)
+      (check-equal? (hash-ref xml_hash "empty") "")
+      (check-equal? (hash-ref xml_hash "empty.attr1") "a1")
+      (check-equal? (hash-ref xml_hash "empty.attr2") "a2")
+      )
     )
 
    (test-case
