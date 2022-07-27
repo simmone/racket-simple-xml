@@ -141,7 +141,7 @@
                     (detail-line "xml_list is null, end loop"))))
 
             (detail-line "remove all's only one node's sequence suffix.")
-            (set! xml_hash (remove-one-map xml_hash))
+;;            (set! xml_hash (remove-one-map xml_hash))
 
             (detail-new-page)
             (detail-line "")
