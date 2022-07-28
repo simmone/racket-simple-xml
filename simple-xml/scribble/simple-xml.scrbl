@@ -1,7 +1,5 @@
 #lang scribble/manual
 
-@(require (for-label simple-xml))
-
 @title{Simple-Xml: read xml to hash, write xml from lists.}
 
 Racket build-in xml decoding function is: xml->xexpr. But decoded result is a hierrachical list, not covenient use.
@@ -14,18 +12,14 @@ Use lists->xml(lists->compact_xml), convert recursive list to generate xml, remo
 
 @table-of-contents[]
 
-@defmodule[simple-xml]
-
-@section[#:tag "install"]{Install}
+@section{Install}
 
 raco pkg install simple-xml
 
 @section{xml->hash}
 
-@defproc[(xml->hash
-              [xml_file path-string?]
-              )
-            (or/c #f hash)]{
+@codeblock{
+  (xml->hash (or/c path-string? input-port?))
 }
 
 @itemlist[
@@ -34,9 +28,8 @@ raco pkg install simple-xml
   @item{Use hierachy to access all the nodes's attribute and content.}
   @item{Use "'s count" suffix to get each node's count.}
   @item{Use count to traverse list nodes.}
+  @item{Each node serial number from 1, serial number appended.}
 ]
-
-If xml is broken, return #f.
 
 @subsection{Basic Usage}
 
@@ -53,18 +46,18 @@ xml->hash:
 
   (printf "empty's count: ~a\n" (hash-ref xml_hash "empty's count"))
 
-  (printf "empty.attr1: [~a]\n" (hash-ref xml_hash "empty.attr1"))
+  (printf "empty.attr1: [~a]\n" (hash-ref xml_hash "empty1.attr1"))
 
-  (printf "empty.attr2: [~a]\n" (hash-ref xml_hash "empty.attr2"))
+  (printf "empty.attr2: [~a]\n" (hash-ref xml_hash "empty1.attr2"))
 
-  (printf "empty's content: [~a]\n" (hash-ref xml_hash "empty"))
+  (printf "empty's content: [~a]\n" (hash-ref xml_hash "empty1"))
 )
 
 xml hash has 4 pairs.
 empty's count: 1
-empty.attr1: [a1]
-empty.attr2: [a2]
-empty's content: []
+empty1.attr1: [a1]
+empty1.attr2: [a2]
+empty1's content: []
 }
 
 @subsection{Hierachy}
