@@ -1,6 +1,6 @@
 #lang racket
 
-(require "src/xml.rkt")
+(require "xml.rkt")
 
 (provide (contract-out
           [xml->hash (-> (or/c path-string? input-port?) (or/c #f hash?))]

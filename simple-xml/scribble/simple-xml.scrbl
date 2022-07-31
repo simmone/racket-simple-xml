@@ -1,7 +1,5 @@
 #lang scribble/manual
 
-@(require (for-label simple-xml))
-
 @title{Simple-Xml: read xml to hash, write xml from lists.}
 
 Racket build-in xml decoding function is: xml->xexpr. But decoded result is a hierrachical list, not covenient use.
@@ -14,18 +12,14 @@ Use lists->xml(lists->compact_xml), convert recursive list to generate xml, remo
 
 @table-of-contents[]
 
-@defmodule[simple-xml]
-
-@section[#:tag "install"]{Install}
+@section{Install}
 
 raco pkg install simple-xml
 
 @section{xml->hash}
 
-@defproc[(xml->hash
-              [xml_file path-string?]
-              )
-            (or/c #f hash)]{
+@codeblock{
+  (xml->hash (or/c path-string? input-port?)) -> hash?
 }
 
 @itemlist[
@@ -34,9 +28,8 @@ raco pkg install simple-xml
   @item{Use hierachy to access all the nodes's attribute and content.}
   @item{Use "'s count" suffix to get each node's count.}
   @item{Use count to traverse list nodes.}
+  @item{Each node serial number from 1, serial number appended.}
 ]
-
-If xml is broken, return #f.
 
 @subsection{Basic Usage}
 
@@ -53,18 +46,18 @@ xml->hash:
 
   (printf "empty's count: ~a\n" (hash-ref xml_hash "empty's count"))
 
-  (printf "empty.attr1: [~a]\n" (hash-ref xml_hash "empty.attr1"))
+  (printf "empty.attr1: [~a]\n" (hash-ref xml_hash "empty1.attr1"))
 
-  (printf "empty.attr2: [~a]\n" (hash-ref xml_hash "empty.attr2"))
+  (printf "empty.attr2: [~a]\n" (hash-ref xml_hash "empty1.attr2"))
 
-  (printf "empty's content: [~a]\n" (hash-ref xml_hash "empty"))
+  (printf "empty's content: [~a]\n" (hash-ref xml_hash "empty1"))
 )
 
 xml hash has 4 pairs.
 empty's count: 1
-empty.attr1: [a1]
-empty.attr2: [a2]
-empty's content: []
+empty1.attr1: [a1]
+empty1.attr2: [a2]
+empty1's content: []
 }
 
 @subsection{Hierachy}
@@ -86,13 +79,14 @@ xml:
 xml->hash:
 @codeblock{
 (let ([xml_hash (xml->hash "hierachy.xml")])
-  (printf "level1.level2.level3.attr: [~a]\n" (hash-ref xml_hash "level1.level2.level3.attr"))
+  ;; if each node is the unique, so each node must append serial "1" at the end.
+  (printf "level11.level21.level31.attr: [~a]\n" (hash-ref xml_hash "level11.level21.level31.attr"))
 
-  (printf "level1.level2.level3.level4: [~a]\n" (hash-ref xml_hash "level1.level2.level3.level4"))
+  (printf "level11.level21.level31.level41: [~a]\n" (hash-ref xml_hash "level11.level21.level31.level41"))
 )
 
-level1.level2.level3.attr: [a3]
-level1.level2.level3.level4: [Hello Xml!]
+level11.level21.level31.attr: [a3]
+level11.level21.level31.level41: [Hello Xml!]
 }
 
 @subsection{Count and List}
@@ -118,40 +112,41 @@ xml->hash:
 
   (printf "list's count: [~a]\n" (hash-ref xml_hash "list's count"))
 
-  (printf "list.child's count: [~a]\n" (hash-ref xml_hash "list.child's count"))
+  (printf "list1.child's count: [~a]\n" (hash-ref xml_hash "list1.child's count"))
 
-  (printf "list.child1's content: [~a]\n" (hash-ref xml_hash "list.child1"))
-  (printf "list.child1.attr: [~a]\n" (hash-ref xml_hash "list.child1.attr"))
+  (printf "list1.child1's content: [~a]\n" (hash-ref xml_hash "list1.child1"))
+  (printf "list1.child1.attr: [~a]\n" (hash-ref xml_hash "list1.child1.attr"))
 
-  (printf "list.child2's content: [~a]\n" (hash-ref xml_hash "list.child2"))
-  (printf "list.child2.attr: [~a]\n" (hash-ref xml_hash "list.child2.attr"))
+  (printf "list1.child2's content: [~a]\n" (hash-ref xml_hash "list1.child2"))
+  (printf "list1.child2.attr: [~a]\n" (hash-ref xml_hash "list1.child2.attr"))
 
-  (printf "list.child3's content: [~a]\n" (hash-ref xml_hash "list.child3"))
-  (printf "list.child3.attr: [~a]\n" (hash-ref xml_hash "list.child3.attr")))
+  (printf "list1.child3's content: [~a]\n" (hash-ref xml_hash "list1.child3"))
+  (printf "list1.child3.attr: [~a]\n" (hash-ref xml_hash "list1.child3.attr")))
 
 xml hash has 8 pairs.
 list's count: [1]
-list.child's count: [3]
-list.child1's content: [c1]
-list.child1.attr: [a1]
-list.child2's content: [c2]
-list.child2.attr: [a2]
-list.child3's content: [c3]
-list.child3.attr: [a3]
+list1.child's count: [3]
+list1.child1's content: [c1]
+list1.child1.attr: [a1]
+list1.child2's content: [c2]
+list1.child2.attr: [a2]
+list1.child3's content: [c3]
+list1.child3.attr: [a3]
 }
 
 In above example, you can use "'s count" suffix to get each node's occurences.
 
-If a node's occurs more then once, so it's a list node.
-Then we can use loop to traverse a node list.
+Append serial maybe let the code not so readable, but the benefit is we can use loop to traverse all node list.
+
+By node count and node appended serial.
 
 @codeblock{
   (let loop ([index 1])
-    (when (<= index (hash-ref xml_hash "list.child's count"))
+    (when (<= index (hash-ref xml_hash "list1.child's count"))
       (printf "child[~a]'s attr:[~a] and content:[~a]\n"
               index
-              (hash-ref xml_hash (format "list.child~a.attr" index))
-              (hash-ref xml_hash (format "list.child~a" index)))
+              (hash-ref xml_hash (format "list1.child~a.attr" index))
+              (hash-ref xml_hash (format "list1.child~a" index)))
       (loop (add1 index))))
 
 child[1]'s attr:[a1] and content:[c1]
@@ -161,10 +156,8 @@ child[3]'s attr:[a3] and content:[c3]
 
 @section{lists->xml}
 
-@defproc[(lists->xml
-              [xml list?]
-              )
-            string?]{
+@codeblock{
+  (lists->xml list?) -> string?
 }
 
 convert lists to xml, the list should obey below rules.
@@ -196,10 +189,8 @@ convert lists to xml, the list should obey below rules.
      </H1>
    }
 
-@defproc[(lists->compact_xml
-              [xml list?]
-              )
-            string?]{
+@codeblock{
+  (lists->compact_xml list?) -> string?
 }
 
 remove all the format characters.

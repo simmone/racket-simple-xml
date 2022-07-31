@@ -20,16 +20,16 @@
 
       (check-equal? (hash-ref xml_hash "list's count") 1)
 
-      (check-equal? (hash-ref xml_hash "list.child's count") 3)
+      (check-equal? (hash-ref xml_hash "list1.child's count") 3)
 
-      (check-equal? (hash-ref xml_hash "list.child1") "c1")
-      (check-equal? (hash-ref xml_hash "list.child1.attr") "a1")
+      (check-equal? (hash-ref xml_hash "list1.child1") "c1")
+      (check-equal? (hash-ref xml_hash "list1.child1.attr") "a1")
 
-      (check-equal? (hash-ref xml_hash "list.child2") "c2")
-      (check-equal? (hash-ref xml_hash "list.child2.attr") "a2")
+      (check-equal? (hash-ref xml_hash "list1.child2") "c2")
+      (check-equal? (hash-ref xml_hash "list1.child2.attr") "a2")
 
-      (check-equal? (hash-ref xml_hash "list.child3") "c3")
-      (check-equal? (hash-ref xml_hash "list.child3.attr") "a3")
+      (check-equal? (hash-ref xml_hash "list1.child3") "c3")
+      (check-equal? (hash-ref xml_hash "list1.child3.attr") "a3")
       ))
 
    (test-case
