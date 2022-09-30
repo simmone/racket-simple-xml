@@ -1,6 +1,6 @@
 #lang racket
 
-(require rackunit/text-ui)
+(require rackunit/text-ui rackunit)
 (require racket/date)
 
 (require racket/runtime-path)
@@ -8,7 +8,7 @@
 (define-runtime-path sharedStrings_formated_xml_file "sharedStrings_formated.xml")
 (define-runtime-path sharedStrings_compact_xml_file "sharedStrings_compact.xml")
 
-(require rackunit "../../main.rkt")
+(require "../../main.rkt")
 
 (define test-xml
   (test-suite

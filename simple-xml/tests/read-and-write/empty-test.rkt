@@ -1,12 +1,12 @@
 #lang racket
 
-(require rackunit/text-ui)
+(require rackunit/text-ui rackunit)
 (require racket/date)
 
 (require racket/runtime-path)
 (define-runtime-path empty_xml_file "empty.xml")
 
-(require rackunit "../../main.rkt")
+(require "../../main.rkt")
 
 (define test-xml
   (test-suite

@@ -1,12 +1,12 @@
 #lang racket
 
-(require rackunit/text-ui)
+(require rackunit/text-ui rackunit)
 (require racket/date)
 
 (require racket/runtime-path)
 (define-runtime-path workbook_xml_file "workbook.xml")
 
-(require rackunit "../../main.rkt")
+(require "../../main.rkt")
 
 (define test-xml
   (test-suite

@@ -1,12 +1,11 @@
 #lang racket
 
-(require rackunit/text-ui)
-(require racket/date)
+(require rackunit/text-ui rackunit)
 
 (require racket/runtime-path)
 (define-runtime-path broken_xml_file "broken.xml")
 
-(require rackunit "../../main.rkt")
+(require "../../main.rkt")
 
 (define test-xml
   (test-suite
@@ -15,14 +14,15 @@
    (test-case
     "test-broken"
 
-    (let ([xml_hash (xml->hash broken_xml_file)])
-      (check-false xml_hash)
-      )
+    (check-exn
+     exn:fail?
+     (lambda ()
+       (xml->hash broken_xml_file)))
 
-    (let ([xml_hash (xml->hash (open-input-file broken_xml_file))])
-      (check-false xml_hash)
-      )
-
+    (check-exn
+     exn:fail?
+     (lambda ()
+       (xml->hash (open-input-file broken_xml_file))))
     )
 
   ))
