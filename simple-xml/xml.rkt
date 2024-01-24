@@ -25,7 +25,7 @@
                              "><")
             (lambda (filtered_port)
               (list (xml->xexpr (document-element (read-xml filtered_port)))))))])
-
+    
     (let ([xml_hash (make-hash)])
       ;; parent_node means parent node name, start from #f
       (let loop-node ([parent_node #f]
@@ -55,7 +55,7 @@
                            [content_list (cddr node)]
                            [prefix (format "~a~a" (if parent_node (format "~a." parent_node) "") first_node)]
                            [count_sym (format "~a's count" prefix)])
-
+                      
                       (hash-set! xml_hash count_sym (add1 (hash-ref xml_hash count_sym 0)))
                       (set! prefix (format "~a~a~a"
                                            (if parent_node (format "~a." parent_node) "")
@@ -68,10 +68,10 @@
                           (loop-attr (cdr attrs))))
 
                       (cond
-                       [(and (= (length content_list) 1) (not (list? (car content_list))))
-                        (hash-set! xml_hash prefix (car content_list))]
                        [(null? content_list)
                         (hash-set! xml_hash prefix "")]
+                       [(not (list? (car content_list)))
+                        (hash-set! xml_hash prefix (string-join content_list ""))]
                        [else
                         (loop-node prefix content_list)])
 
