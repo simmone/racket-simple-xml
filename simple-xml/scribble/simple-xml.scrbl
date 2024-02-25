@@ -1,6 +1,6 @@
 #lang scribble/manual
 
-@title{Simple-Xml: read xml to hash, write xml from lists.}
+@title{Simple-Xml: Simplified XML Parsing and Writing}
 
 Racket build-in xml decoding function is: xml->xexpr. But decoded result is a hierrachical list, not covenient use.
 
